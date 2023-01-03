@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="addBookClassModal" class="modal fade" id="addBookClass_Modal" tabindex="-1" role="dialog" aria-labelledby="addBookClass_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBookClassModalLabel">添加書籍類別</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group form-floating mb-3">
+          <input type="text" name="name" class="form-control" id="addBookClass_input">
+          <label id="addBookClass_label" for="name_input">BookClass</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button @click="addBookClass(bookPage.current)" id="addBookClass_save" type="button" class="btn btn-primary">添加</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--新增modal-->
+<div th:fragment="addModal" class="modal fade" id="add_Modal" tabindex="-1" role="dialog" aria-labelledby="add_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">添加書籍資料</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <input type="hidden" name="id" id="bid_add_input">
+          <!--      bookName    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="name_add_input">
+            <label id="name_add_label" for="name_input">bookName</label>
+          </div>
+          <!--      author    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="author" class="form-control" id="author_add_input" required>
+            <label id="author_add_label" for="author_input">author</label>
+            <div class="text-danger">
+            </div>
+          </div>
+          <div class="row">
+            <!--      bookClass   -->
+            <div class="form-group mb-3 w-25">
+              <label id="bookClass_add_label" for="bookClass_add_select">bookClass</label>
+              <select class="form-select" id="bookClass_add_select">
+              </select>
+            </div>
+            <!--      price    -->
+            <div class="form-group form-floating mb-3 w-25">
+              <input type="number" name="price" class="form-control" id="price_add_input" required>
+              <label id="price_add_label" for="price_input">price</label>
+              <div class="text-danger">
+              </div>
+            </div>
+            <!--      in stock    -->
+            <div class="form-group form-floating mb-3 w-25">
+              <input type="number" name="inStock" class="form-control" id="inStock_add_input" required>
+              <label id="inStock_add_label" for="inStock_input">in stock</label>
+              <div class="text-danger">
+              </div>
+            </div>
+            <div class="input-group form-floating mb-3 w-25">
+
+            </div>
+          </div>
+          <!--      publishingHouse    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="publishingHouse_add_input">
+            <label id="publishingHouse_add_label" for="publishingHouse_input">PublishingHouse</label>
+          </div>
+          <!--    publicationDate   -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="publicationDate_add_input" >
+            <label id="publicationDate_add_label" for="publicationDate_input">PublicationDate</label>
+          </div>
+          <!--    content   -->
+          <div class="form-group form-floating mb-3">
+            <textarea name="name" rows="5" class="form-control" id="content_add_input"></textarea>
+            <label id="content_add_label" for="content_input">Content</label>
+          </div>
+          <div class="input-group mb-3">
+            <input type="file" class="form-control" id="bookImg">
+            <label class="input-group-text" for="bookImg">上傳</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button @click="addProduct(bookPage.pages)" id="book_add_save" type="button" class="btn btn-primary">添加</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--修改modal-->
+<div th:fragment="updateModal" class="modal fade" id="update_Modal" tabindex="-1" role="dialog" aria-labelledby="update_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">修改書籍資料</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <input type="hidden" name="id" id="bid_input">
+          <!--      bookName    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="name_input">
+            <label id="name_label" for="name_input">bookName</label>
+          </div>
+          <!--      author    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="author" class="form-control" id="author_input" required>
+            <label id="author_label" for="author_input">author</label>
+            <div class="text-danger">
+            </div>
+          </div>
+          <div class="row">
+            <!--      bookClass   -->
+            <div class="form-group mb-3 w-25">
+              <label id="bookClass_label" for="bookClass_select">bookClass</label>
+              <select class="form-select" id="bookClass_select" name="bid">
+            </select>
+            </div>
+            <!--      price    -->
+          <div class="form-group form-floating mb-3 w-25">
+            <input type="number" name="price" class="form-control" id="price_input" required>
+            <label id="price_label" for="price_input">price</label>
+            <div class="text-danger">
+            </div>
+          </div>
+            <!--      in stock    -->
+            <div class="form-group form-floating mb-3 w-25">
+              <input type="number" name="inStock" class="form-control" id="inStock_input" required>
+              <label id="inStock_label" for="inStock_input">in stock</label>
+              <div class="text-danger">
+              </div>
+            </div>
+            <div class="input-group form-floating mb-3 w-25">
+
+            </div>
+          </div>
+          <!--      publishingHouse    -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="publishingHouse_input">
+            <label id="publishingHouse_label" for="publishingHouse_input">PublishingHouse</label>
+          </div>
+          <!--    publicationDate   -->
+          <div class="form-group form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="publicationDate_input" >
+            <label id="publicationDate_label" for="publicationDate_input">PublicationDate</label>
+          </div>
+          <!--    content   -->
+          <div class="form-group form-floating mb-3">
+            <textarea name="name" rows="5" class="form-control" id="content_input"></textarea>
+            <label id="content_label" for="content_input">Content</label>
+          </div>
+          <div class="input-group mb-3">
+            <input type="file" class="form-control" id="updateImg">
+            <label class="input-group-text" for="updateImg">上傳</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button @click="updateProduct(bookPage.current)" id="book_save" type="button" class="btn btn-primary">修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--商品管理表格-->
+<div th:fragment="product" class="table-responsive m-3">
+  <div class="row col-12">
+    <div class="col-3">
+  <form class="form-inline m-3">
+    <div class="input-group">
+      <input type="text" class="form-control" id="product_keyword" v-model="keywordStr" placeholder="商品搜索">
+<button @click="searchProduct(1)" type="submit" class="btn btn-sm btn-success">搜尋</button>
+    </div>
+  </form>
+    <form class="form-inline m-3">
+      <div class="input-group">
+        <select type="text" class="form-control" v-model="keywordClass" id="class_keyword" >
+          <option disabled value="">類別搜索</option>
+          <option v-for="book in bookClass" :value="book.bid">{{book.bookClass}}</option>
+
+          </select>
+        <button @click="classSearch(1)" type="submit" class="btn btn-sm btn-success">搜尋</button>
+      </div>
+    </form>
+  </div>
+    <div class="col-3 m-3">
+    <h2><a id="addModal" data-bs-toggle="modal" data-bs-target="#add_Modal" class="btn btn-sm btn-success">添加商品</a></h2>
+      <h2><a id="addBookClassModal" data-bs-toggle="modal" data-bs-target="#addBookClass_Modal" class="btn btn-sm btn-success">添加書籍類別</a></h2>
+  </div>
+</div>
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>BookImg</th>
+        <th>BookName</th>
+        <th>Price</th>
+        <th>Author</th>
+        <th>Sale</th>
+        <th>InStock</th>
+        <th>BookClass</th>
+        <th>PublishingHouse</th>
+        <th>PublicationDate</th>
+        <th>Content</th>
+        <th>Operate</th>
+      </tr>
+      </thead>
+      <tbody v-for="book in bookPage.records">
+      <tr>
+        <td>{{book.id}}</td>
+        <td><img :src="book.bookimg" style="width: 100px; height: 150px;"></td>
+        <td>{{book.bookname}}</td>
+        <td>{{book.price}}</td>
+        <td>{{book.author}}</td>
+        <td>{{book.salecount}}</td>
+        <td>{{book.bookcount}}</td>
+        <td>{{book.bookClassName.bookClass}}</td>
+        <td>{{book.publishinghouse}}</td>
+        <td>{{book.publicatiodate}}</td>
+        <td><button @click="showContent(book.id)">點擊顯示</button></td>
+        <td>
+          <button :update_id="book.id" id="updateModal" data-bs-toggle="modal" data-bs-target="#update_Modal" type="button" class="btn btn-sm btn-primary">編輯</button>
+          <button @click="delProduct(book.id,bookPage.current)" class="btn btn-sm btn-danger del_btn">刪除</button>
+        </td>
+      </tr>
+      <tr v-if="content === 'content'+book.id">
+        <td colspan="2">conent</td>
+        <td colspan=10>{{book.content}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <nav v-if="search === ''" aria-label="..." class="m-3 d-flex justify-content-center">
+      <ul class="pagination d-flex align-items-center">
+        <li>
+          <div class="m-3">
+            當前為{{bookPage.current}}頁  總計{{bookPage.pages}}頁 共{{bookPage.total}}本書籍
+          </div>
+        </li>
+        <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+          <a class="page-link" @click="getProduct(bookPage.current-1)">
+            &laquo;
+          </a>
+        </li>
+        <li v-for="num in bookPage.pages"class="page-item"><a class="page-link" @click="getProduct(num)">{{num}}</a></li>
+        <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+          <a class="page-link"  @click="getProduct(bookPage.current+1)">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav v-if="search === 'search'" aria-label="..." class="m-3 d-flex justify-content-center">
+    <ul class="pagination d-flex align-items-center">
+      <li>
+        <div class="m-3">
+          當前為{{bookPage.current}}頁  總計{{bookPage.pages}}頁 共{{bookPage.total}}本書籍
+        </div>
+      </li>
+      <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+        <a class="page-link" @click="searchProduct(bookPage.current-1)">
+          &laquo;
+        </a>
+      </li>
+      <li v-for="num in bookPage.pages"class="page-item"><a class="page-link" @click="searchProduct(num)">{{num}}</a></li>
+      <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+        <a class="page-link"  @click="searchProduct(bookPage.current+1)">
+          &raquo;
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+    <nav v-if="search === 'class'" aria-label="..." class="m-3 d-flex justify-content-center">
+    <ul class="pagination d-flex align-items-center">
+      <li>
+        <div class="m-3">
+          當前為{{bookPage.current}}頁  總計{{bookPage.pages}}頁 共{{bookPage.total}}本書籍
+        </div>
+      </li>
+      <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+        <a class="page-link" @click="classSearch(bookPage.current-1)">
+          &laquo;
+        </a>
+      </li>
+      <li v-for="num in bookPage.pages"class="page-item"><a class="page-link" @click="classSearch(num)">{{num}}</a></li>
+      <li class="page-item" :class="bookPage.current == bookPage.pages?'disabled':''">
+        <a class="page-link"  @click="classSearch(bookPage.current+1)">
+          &raquo;
+        </a>
+      </li>
+    </ul>
+  </nav>
+  </div>
+
+
+</body>
+</html>

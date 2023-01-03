@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--員工管理表格-->
+  <div th:fragment="member" class="table-responsive  m-3">
+    <form class="form-inline m-3">
+      <div class="input-group">
+        <input type="text" class="form-control" id="member_keyword" v-model="keywordStr" placeholder="會員搜索">
+        <button @click="searchMember(1)" type="submit" class="btn btn-sm btn-success">搜尋</button>
+      </div>
+    </form>
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>HeaderImg</th>
+        <th>#</th>
+        <th>email</th>
+        <th>Name</th>
+        <th>Sex</th>
+        <th>Phone</th>
+        <th>Operate</th>
+      </tr>
+      </thead>
+      <tr v-for="user in userPage.records">
+        <td><img style="width: 100px; height: 150px;" :src="user.headimgPath"></td>
+        <td>{{user.id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.sex}}</td>
+        <td>{{user.phone}}</td>
+        <td>
+          <button @click="delMember(user.id,userPage.current)" class="btn btn-sm btn-danger del_btn">刪除</button>
+        </td>
+      </tr>
+    </table>
+    <nav v-if="search ===''" aria-label="..." class="m-3 d-flex justify-content-center">
+      <ul class="pagination d-flex align-items-center">
+        <li>
+          <div class="m-3">
+            當前為{{userPage.current}}頁  總計{{userPage.pages}}頁 共{{userPage.total}}名會員
+          </div>
+        </li>
+        <li class="page-item" :class="userPage.current == userPage.pages?'disabled':''">
+          <a class="page-link" @click="getMember(userPage.current-1)">
+            &laquo;
+          </a>
+        </li>
+        <li v-for="num in userPage.pages"class="page-item"><a class="page-link" @click="getMember(num)">{{num}}</a></li>
+        <li class="page-item" :class="userPage.current == userPage.pages?'disabled':''">
+          <a class="page-link"  @click="getMember(userPage.current+1)">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav v-if="search === 'search'" aria-label="..." class="m-3 d-flex justify-content-center">
+      <ul class="pagination d-flex align-items-center">
+        <li>
+          <div class="m-3">
+            當前為{{userPage.current}}頁  總計{{userPage.pages}}頁 共{{userPage.total}}名會員
+          </div>
+        </li>
+        <li class="page-item" :class="userPage.current == userPage.pages?'disabled':''">
+          <a class="page-link" @click="searchMember(userPage.current-1)">
+            &laquo;
+          </a>
+        </li>
+        <li v-for="num in userPage.pages"class="page-item"><a class="page-link" @click="searchMember(num)">{{num}}</a></li>
+        <li class="page-item" :class="userPage.current == userPage.pages?'disabled':''">
+          <a class="page-link"  @click="searchMember(userPage.current+1)">
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
+</body>
+</html>

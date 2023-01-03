@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="contact" class="table-responsive  m-3">
+    <form class="form-inline m-3">
+        <div class="input-group">
+            <input type="text" class="form-control" id="product_keyword" v-model="keywordStr" placeholder="留言搜索">
+            <button @click="searchContact(1)" type="submit" class="btn btn-sm btn-success">搜尋</button>
+        </div>
+    </form>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+
+        </tr>
+        </thead>
+        <tr v-for="contact in contactPage.records">
+            <td>{{contact.id}}</td>
+            <td>{{contact.name}}</td>
+            <td>{{contact.email}}</td>
+            <td>{{contact.massage}}</td>
+            <td>
+                <button @click="delContact(contact.id,contactPage.current)" class="btn btn-sm btn-danger del_btn">刪除</button>
+            </td>
+        </tr>
+    </table>
+    <nav v-if="search === ''" aria-label="..." class="m-3 d-flex justify-content-center">
+        <ul class="pagination d-flex align-items-center">
+            <li>
+                <div class="m-3">
+                    當前為{{contactPage.current}}頁  總計{{contactPage.pages}}頁 共{{contactPage.total}}則留言
+                </div>
+            </li>
+            <li class="page-item" :class="contactPage.current == contactPage.pages?'disabled':''">
+                <a class="page-link" @click="getContact(contactPage.current-1)">
+                    &laquo;
+                </a>
+            </li>
+            <li v-for="num in contactPage.pages"class="page-item"><a class="page-link" @click="getContact(num)">{{num}}</a></li>
+            <li class="page-item" :class="contactPage.current == contactPage.pages?'disabled':''">
+                <a class="page-link"  @click="getContact(contactPage.current+1)">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <nav v-if="search === 'search'" aria-label="..." class="m-3 d-flex justify-content-center">
+        <ul class="pagination d-flex align-items-center">
+            <li>
+                <div class="m-3">
+                    當前為{{contactPage.current}}頁  總計{{contactPage.pages}}頁 共{{contactPage.total}}則留言
+                </div>
+            </li>
+            <li class="page-item" :class="contactPage.current == contactPage.pages?'disabled':''">
+                <a class="page-link" @click="searchContact(contactPage.current-1)">
+                    &laquo;
+                </a>
+            </li>
+            <li v-for="num in contactPage.pages"class="page-item"><a class="page-link" @click="searchContact(num)">{{num}}</a></li>
+            <li class="page-item" :class="contactPage.current == contactPage.pages?'disabled':''">
+                <a class="page-link"  @click="searchContact(contactPage.current+1)">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
